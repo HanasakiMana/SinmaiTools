@@ -1,4 +1,4 @@
-from read_music_info import read_info
+from read_music_info import readChart
 from read_diving_fish_json import read_json
 import os
 
@@ -15,7 +15,7 @@ def read_hdd(filePath):
     hddData = {}
     for files in filesList:
         if len(files.split('.')) == 1:
-            hddData.update(read_info(filePath + '/' + files))
+            hddData.update(readChart(filePath + '/' + files))
     return hddData
 
 

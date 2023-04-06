@@ -1,10 +1,9 @@
-from ensurepip import version
 import os
 from xml.dom.minidom import parse
 
 # 读取包含歌曲信息的xml文件
 def read_xml(filePath):
-    file = open(filePath)
+    file = open(filePath, encoding='utf-8')
     # 使用xml.dom.minidom生成DOM树
     DOMTree = parse(file)
     # 获取xml文件中的父级元素
@@ -49,31 +48,10 @@ def read_xml(filePath):
         try:    
             chartsDesigners.append(noteData.getElementsByTagName('notesDesigner')[0].getElementsByTagName('str')[0].childNodes[0].data)
         except:
-            chartsDesigners.append('-')
-
-    # 由于水鱼和HDD内保存的版本分类信息不同，需要做替换
-    genre_dict = {
-        'maimai': 'maimai',
-        'maimaiPLUS': 'maimai PLUS',
-        'ORANGE': 'maimai ORANGE',
-        'ORANGEPLUS': 'maimai ORANGE PLUS',
-        'GreeN': 'maimai GreeN',
-        'GreeNPLUS': 'maimai GreeN PLUS',
-        'MURASAKi': 'maimai MURASAKi',
-        'MURASAKiPLUS': 'maimai MURASAKi PLUS',
-        'PiNK': 'maimai PiNK',
-        'PiNKPLUS': 'maimai PiNK PLUS',
-        'MiLK': 'maimai MiLK',
-        'MiLKPLUS': 'MiLK PLUS',
-        'FiNALE': 'maimai FiNALE',
-        'maimaDX': 'maimai でらっくす',
-        'maimaDXPLUS': 'maimai でらっくす PLUS',
-        'Splash': 'maimai でらっくす Splash',
-        'SplashPLUS': 'maimai でらっくす Splash Plus'
-    }
-    version = genre_dict.get(addVersion)
-    if version == None:
-        print(addVersion)
+            if i != 4: # 排除没有白谱但是会append一个-
+                chartsDesigners.append('-')
+            else:
+                pass
 
     # 保存到字典
     return {
@@ -82,9 +60,10 @@ def read_xml(filePath):
         'artist': artist,
         'bpm': bpm,
         'genre': genre,
-        'add_version': version,
+        'add_version': addVersion,
         'level': levels,
-        'ds': ds
+        'ds': ds,
+        'charter': chartsDesigners
     }
 
    
@@ -107,14 +86,13 @@ def read_ma2(filePath):
             slide = int(line[1])
         elif item =='T_REC_TTP':
             touch = int(line[1])
-    if touch == 0:
-        output = [tap, hold, slide, bReak]
-    else:
         output = [tap - touch, hold, slide, touch, bReak]
+        if touch == 0:
+            output[3] == '-'
     return output
 
 
-def read_info(directoryPath):
+def readChart(directoryPath):
     file_list = os.listdir(directoryPath)
     notes = {}
     charts = []
@@ -147,5 +125,4 @@ def read_info(directoryPath):
 
 
 if __name__ == '__main__':
-    print(read_info('music011173'))
-    print(read_info('SDEZ/music/music011143'))
+    print(readChart('charts/SDEZ/music/music011452'))
