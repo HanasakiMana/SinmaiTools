@@ -3,8 +3,8 @@ from shutil import copyfile
 import tempfile
 import time
 
-filePath = r'E:\SDEZ\125\Package\Sinmai_Data\StreamingAssets\A000\SoundData'
-hcaexePath = r'C:\Users\Mallow-GamingMachine\Desktop\acb_decode'
+filePath = r'C:\SDDT150\package\mu3_Data\StreamingAssets\GameData\A016\musicsource\musicsource7157'
+hcaexePath = r'C:\Users\mana\Documents\GitHub\SinmaiTools\acb_decode'
 
 os.chdir(filePath)
 fileList = os.listdir()
@@ -28,13 +28,14 @@ for fileName in acbList:
     tmpPath = tempfile.mkdtemp()
     acbPath = filePath + rf'\{fileName}'
     # 这里执行的是pip安装的acb-py
+    print(f'python -m acb {acbPath} {tmpPath}')
     os.system(f'python -m acb {acbPath} {tmpPath}')
-    hcaPath = tmpPath +rf'\Play.hca'
+    hcaPath = tmpPath +rf'\music.hca'
     # 切换到hca.exe的目录并执行hca2wav操作
     os.chdir(hcaexePath)
-    os.system(rf'.\hca {hcaPath} -a 9DF55E68 -b 7F455149')
+    os.system(rf'.\hca {hcaPath} -a E0748978 -b CF222F1F')
     # 保存导出的wav文件
-    copyfile(tmpPath + rf'\Play.wav', rf'E:\acb_decode\{musicID}.wav')
+    copyfile(tmpPath + rf'\music.wav', rf'{hcaexePath}\{musicID}.wav')
     # 统计信息
     print('\n')
     print(rf'music id: {musicID}')

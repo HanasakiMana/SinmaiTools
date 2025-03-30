@@ -1,0 +1,1 @@
+这里存放了用于为[maimaiDX Collections Index](https://manalogues.com/maindex)生成数据的代码。

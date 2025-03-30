@@ -1,3 +1,6 @@
 *.pyc
 .DS_Store
 charts/SDEZ
+*.wav
+icon.md
+title.md
